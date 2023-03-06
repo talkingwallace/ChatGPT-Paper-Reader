@@ -35,7 +35,7 @@ print('Key points to focus while reading: {}'.format(BASE_POINTS))
 
 api_key = 'Your key'
 session = PaperReader(api_key, points_to_focus=BASE_POINTS)  # You can set your key points 
-summary = session.read_pdf_and_summarize('./1512.03385.pdf')
+summary = session.read_pdf_and_summarize('./alexnet.pdf')
 
 print(summary)
 ```
