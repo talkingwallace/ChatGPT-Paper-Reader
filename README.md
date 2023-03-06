@@ -25,7 +25,7 @@ By default, the initalized prompt will ask ChatGPT to focus on these points:
 These questions are designed for research articles in the field of computer science.
 After finishing reading the paper, you can ask questions using 'question()' interface, it will anwser your question based on the summaries of each part.
 
-## Example: Read ResNet Paper
+## Example: Read AlexNet Paper
 
 ### Summarize AlexNet
 ```python
