@@ -74,7 +74,7 @@ session.question('Describe the proposed method in details.')
 > 
 
 ```python
-session.question('What dataset does this paper used for experiment?')
+session.question('What dataset does this paper use for experiment?')
 ```
 
 > reply: The authors used subsets of the ImageNet dataset used in the ILSVRC-2010 and ILSVRC-2012 competitions for their experiments. These subsets contain approximately 1.2 million training images, 50,000 validation images, and 150,000 testing images.
