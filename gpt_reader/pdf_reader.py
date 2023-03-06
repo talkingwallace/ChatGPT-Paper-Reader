@@ -91,13 +91,14 @@ class PaperReader:
             summary = self._chat(
                 'now I send you part {}：{}'.format(i, full_text[i *
                                                                 self.token_len:(i + 1) * self.token_len]))
-        # Logging the summary if verbose logging is enabled
-        if self.verbose:
-            print(summary)
-        # Logging that reading of a part is finished
-        print('reading part {} finished'.format(i))
-        # Adding the summary of the part to the summary messages
-        self.summary_msg.append({"role": "user", "content": 'summary of section {}: {}'.format(i, summary)})
+            # Logging the summary if verbose logging is enabled
+            if self.verbose:
+                print(summary)
+            # Logging that reading of a part is finished
+            print('reading part {} finished'.format(i))
+            # Adding the summary of the part to the summary messages
+            self.summary_msg.append({"role": "user", "content": 'summary of section {}: {}'.format(i, summary)})
+
         # Adding a prompt for the user to summarize the whole paper to the summary messages
         self.summary_msg.append({"role": "user", "content": 'Now please make a summary of the whole paper'})
         # Sending the summary messages to the API and getting the response
@@ -105,10 +106,9 @@ class PaperReader:
         # Returning the summary of the whole paper
         return result["choices"][0]["message"]["content"]
 
-
     def read_pdf_and_summarize(self, pdf_path):
         # This method is used to read a research paper from a PDF file and summarize it
-
+        
         # Creating a PdfReader object to read the PDF file
         reader = PdfReader(pdf_path)
         # Extracting the text from all the pages of the PDF file
@@ -116,6 +116,7 @@ class PaperReader:
         for i in reader.pages:
             full_text += i.extract_text()
         # Summarizing the full text of the research paper and returning the summary
+        print('reading pdf finished')
         summary = self.summarize(full_text)
         return summary
 
