@@ -1,7 +1,7 @@
-from gpt_reader.pdf_reader import PaperReader
+from gpt_reader.pdf_reader import PaperReader, BASE_POINTS
 
-api_key = 'Your api key'
-session = PaperReader(api_key)
+api_key = 'You api key'
+session = PaperReader(api_key, points_to_focus=BASE_POINTS)
 summary = session.read_pdf_and_summarize('./alexnet.pdf')
-
+ 
 print(summary)

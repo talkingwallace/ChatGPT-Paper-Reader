@@ -24,7 +24,7 @@ class PaperReader:
 
     """
 
-    def __init__(self, openai_key, token_length=3072, model="gpt-3.5-turbo",
+    def __init__(self, openai_key, token_length=4000, model="gpt-3.5-turbo",
                  points_to_focus=BASE_POINTS, verbose=False):
 
         # Setting the API key to use the OpenAI API
