@@ -41,20 +41,27 @@ print(summary)
 ```
 # console print
 reading pdf finished
-reading part 0 finished
-reading part 1 finished
-reading part 2 finished
-reading part 3 finished
-reading part 4 finished
-reading part 5 finished
-reading part 6 finished
-reading part 7 finished
-reading part 8 finished
-reading part 9 finished
-reading part 10 finished
+page: 0, part: 0
+page: 0, part: 1
+page: 1, part: 0
+page: 1, part: 1
+page: 2, part: 0
+page: 2, part: 1
+page: 3, part: 0
+page: 3, part: 1
+page: 4, part: 0
+page: 4, part: 1
+page: 5, part: 0
+page: 5, part: 1
+page: 6, part: 0
+page: 6, part: 1
+page: 7, part: 0
+page: 7, part: 1
+page: 8, part: 0
+page: 8, part: 1
 ```
 
-> reply: This paper presents a novel computer vision model, designed to classify high-resolution images in the ImageNet dataset. The authors developed a Convolutional Neural Network (CNN) with several innovative features including the use of Rectified Linear Units (ReLUs) instead of traditional saturating neuron models, parallelization across multiple GPUs, Local Response Normalization (LRN) to aid generalization, overlapping pooling to summarize the outputs of neighboring groups of neurons, and two methods to combat overfitting on image data. The authors achieved top-1 and top-5 error rates of 37.5% and 17.0% on the ImageNet test set of ILSVRC-2010, respectively, and their model achieved a winning top-5 test error rate of 15.3% in the ILSVRC-2012 competition. The authors' proposed method outperformed the previous state-of-the-art and demonstrated the effectiveness of deep learning models for image classification.
+> reply: The paper presents a deep convolutional neural network architecture that was trained to classify 1.2 million high-resolution images in the ImageNet LSVRC-2010 contest into 1000 different classes. The network achieved top-1 and top-5 error rates of 37.5% and 17.0%, respectively, which is considerably better than the previous state-of-the-art. The authors used non-saturating neurons and a very efficient GPU implementation of the convolution operation to make training faster. They also employed a recently-developed regularization method called "dropout" to reduce overfitting in the fully-connected layers. The paper discusses the importance of large datasets for object recognition and the need for models with a large learning capacity. The authors entered a variant of this model in the ILSVRC-2012 competition and achieved a winning top-5 test error rate of 15.3%, compared to 26.2% achieved by the second-best entry. The paper also discusses the advantages of using convolutional neural networks (CNNs) for image recognition, including their ability to make strong and mostly correct assumptions about the nature of images, and the challenges of applying CNNs to high-resolution images. The authors describe the architecture of their CNN, which contains eight layers with weights, and the techniques they used to combat overfitting, including data augmentation and dropout. The paper provides qualitative evaluations of their CNN architecture and suggests future work, including using very large and deep convolutional nets on video sequences. The paper also lists references cited in the paper, including papers on image recognition challenges, object recognition, handwritten digit recognition, and convolutional networks and their applications in vision.
 
 
 ### Ask some questions
