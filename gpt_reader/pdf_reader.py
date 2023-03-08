@@ -1,13 +1,9 @@
 from PyPDF2 import PdfReader
 import openai
+from .prompt import BASE_POINTS, READING_PROMT_V2
+from .paper import Paper
+from .model_interface import OpenAIModel
 
-BASE_POINTS = """
-1. Who are the authors?
-2. What is the process of the proposed method?
-3. What is the performance of the proposed method? Please note down its performance metrics.
-4. What are the baseline models and their performances? Please note down these baseline methods.
-5. What dataset did this paper use?
-"""
 
 # Setting the API key to use the OpenAI API
 class PaperReader:
@@ -31,11 +27,7 @@ class PaperReader:
         openai.api_key = openai_key
 
         # Initializing prompts for the conversation
-        self.init_prompt = """
-             You are a researcher helper bot. You can help the user with research paper reading and summarizing. \n
-             Now I am going to send you a paper. You need to read it and summarize it for me part by part. \n
-             When you are reading, You need to focus on these key points:{}
-        """.format(points_to_focus)
+        self.init_prompt = READING_PROMT_V2.format(points_to_focus)
 
         self.summary_prompt = 'You are a researcher helper bot. Now you need to read the summaries of a research paper.'
         self.messages = []  # Initializing the conversation messages
@@ -44,6 +36,7 @@ class PaperReader:
         self.keep_round = 2  # Rounds of previous dialogues to keep in conversation
         self.model = model  # Setting the GPT model to use
         self.verbose = verbose  # Flag to enable/disable verbose logging
+        self.model = OpenAIModel(api_key=openai_key, model=model)
 
     def drop_conversation(self, msg):
         # This method is used to drop previous messages from the conversation and keep only recent ones
@@ -56,12 +49,7 @@ class PaperReader:
             return msg
 
     def send_msg(self, msg):
-        # This method is used to send a message to the OpenAI API and get a response
-        response = openai.ChatCompletion.create(
-            model=self.model,
-            messages=msg
-        )
-        return response
+        return self.model.send_msg(msg)
 
     def _chat(self, message):
         # This method is used to send a message and get a response from the OpenAI API
@@ -71,13 +59,13 @@ class PaperReader:
         # Sending the messages to the API and getting the response
         response = self.send_msg(self.messages)
         # Adding the system response to the conversation messages
-        self.messages.append({"role": "system", "content": response["choices"][0]["message"]["content"]})
+        self.messages.append({"role": "system", "content": response})
         # Dropping previous conversation messages to keep the conversation history short
         self.messages = self.drop_conversation(self.messages)
         # Returning the system response
-        return response["choices"][0]["message"]["content"]
+        return response
 
-    def summarize(self, full_text):
+    def summarize(self, paper: Paper):
         # This method is used to summarize a given research paper
 
         # Adding the initial prompt to the conversation messages
@@ -86,38 +74,34 @@ class PaperReader:
         ]
         # Adding the summary prompt to the summary messages
         self.summary_msg = [{"role": "system", "content": self.summary_prompt}]
-        # Reading and summarizing each part of the research paper
-        for i in range(len(full_text) // self.token_len):  # in case we reach the max token limit
-            summary = self._chat(
-                'now I send you part {}：{}'.format(i, full_text[i *
-                                                                self.token_len:(i + 1) * self.token_len]))
+
+         # Reading and summarizing each part of the research paper
+        for (page_idx, part_idx, text) in paper.iter_pages():
+            print('page: {}, part: {}'.format(page_idx, part_idx))
+            # Sending the text to the API and getting the response
+            summary = self._chat('now I send you page {}, part {}：{}'.format(page_idx, part_idx, text))
             # Logging the summary if verbose logging is enabled
             if self.verbose:
                 print(summary)
-            # Logging that reading of a part is finished
-            print('reading part {} finished'.format(i))
             # Adding the summary of the part to the summary messages
-            self.summary_msg.append({"role": "user", "content": 'summary of section {}: {}'.format(i, summary)})
+            self.summary_msg.append({"role": "user", "content": '{}'.format(summary)})
 
         # Adding a prompt for the user to summarize the whole paper to the summary messages
         self.summary_msg.append({"role": "user", "content": 'Now please make a summary of the whole paper'})
         # Sending the summary messages to the API and getting the response
         result = self.send_msg(self.summary_msg)
         # Returning the summary of the whole paper
-        return result["choices"][0]["message"]["content"]
+        return result
 
     def read_pdf_and_summarize(self, pdf_path):
         # This method is used to read a research paper from a PDF file and summarize it
         
         # Creating a PdfReader object to read the PDF file
-        reader = PdfReader(pdf_path)
-        # Extracting the text from all the pages of the PDF file
-        full_text = ''
-        for i in reader.pages:
-            full_text += i.extract_text()
+        pdf_reader = PdfReader(pdf_path)
+        paper = Paper(pdf_reader)
         # Summarizing the full text of the research paper and returning the summary
         print('reading pdf finished')
-        summary = self.summarize(full_text)
+        summary = self.summarize(paper)
         return summary
 
     def get_summary_of_each_part(self):
@@ -132,6 +116,6 @@ class PaperReader:
         # Sending the summary messages to the API and getting the response
         response = self.send_msg(self.summary_msg)
         # Adding the system response to the summary messages
-        self.summary_msg.append({"role": "system", "content": response["choices"][0]["message"]["content"]})
+        self.summary_msg.append({"role": "system", "content": response})
         # Returning the system response
-        return response["choices"][0]["message"]["content"]
+        return response
