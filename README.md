@@ -104,9 +104,9 @@ session.question('Summarize this paper and your anwsers above, then translate th
 ```
 pip install gradio
 ```
-2. Run app.py. The link to the web page is output in the console.
+2. Run gui.py. The link to the web page is output in the console.
 ```
-python app.py
+python gui.py
 ```
 ![alt](console.png)
 3. Fill in your API_KEY in the appropriate places on the web page and upload the required analysis PDF file. After you wait for the program to finish analyzing, you can switch to the second TAB and ask the program questions about the PDF.
