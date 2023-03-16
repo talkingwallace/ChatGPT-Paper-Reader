@@ -99,6 +99,7 @@ session.question('Summarize this paper and your anwsers above, then translate th
 > reply: 这篇论文的作者是来自Toronto大学的Alex Krizhevsky、Ilya Sutskever和Geoffrey E. Hinton。该论文提出了一种基于卷积神经网络的深度学习方法，该方法在 ImageNet LSVRC-2010 和 ImageNet LSVRC-2012 图像识别挑战中达到了最佳结果。\n\n该方法使用了一系列技术来优化性能，包括使用ReLU激活函数和局部响应归一化等方法提高训练速度，使用重叠池化等方法提高泛化能力。为了减少过拟合，该方法还使用了数据增强技术，如图像平移、水平反射和使用PCA修改训练图像的RGB通道强度。作者在多个GPU上使用随机梯度下降进行训练，通过调整学习速率和使用权重衰减、动量和dropout等技术来优化性能。\n\n用于实验的数据集是 ImageNet LSVRC-2010 和 ImageNet LSVRC-2012 数据集的子集，其中包括大约120万个训练图像、5万个验证图像和15万个测试图像。该方法相比之前的最佳结果，达到了 更好的Top-1错误率和Top-5错误率。作者使用这两个错误率来评估性能，Top-1错误率表示预测的类别不是正确标签的百分率，而Top-5错误率表示真实标签不在模型预测的五个最可能标签中的百分率。
 
 ## GUI Interface
+![alt](webui.png)
 1. Install gradio in your python environment.
 ```
 pip install gradio
@@ -107,6 +108,8 @@ pip install gradio
 ```
 python app.py
 ```
+![alt](console.png)
+3. Fill in your API_KEY in the appropriate places on the web page and upload the required analysis PDF file. After you wait for the program to finish analyzing, you can switch to the second TAB and ask the program questions about the PDF.
 
 ## TODO
 
