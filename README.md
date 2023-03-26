@@ -1,4 +1,8 @@
-## CHATGPT-PAPER-READER📝 
+## CHATGPT-PAPER-READER
+
+<p align="center">
+  <img src="./img/robot.png" width="100">
+</p>
 
 This repository provides a simple interface that utilizes the gpt-3.5-turbo model to read academic papers in PDF format locally. You can use it to help you summarize papers, create presentation slides, or simply fulfill tasks assigned by your supervisor.
 
