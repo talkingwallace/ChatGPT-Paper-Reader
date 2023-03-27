@@ -3,12 +3,13 @@
 <p align="center">
   <img src="./img/robot.png" width="100">
 </p>
+# Academic Paper Reader
 
-This repository provides a simple interface that utilizes the gpt-3.5-turbo model to read academic papers in PDF format locally. You can use it to help you summarize papers, create presentation slides, or simply fulfill tasks assigned by your supervisor.
+This repository provides a simple interface that utilizes the `gpt-3.5-turbo` model to read academic papers in PDF format locally. You can use it to help you summarize papers, create presentation slides, or simply fulfill tasks assigned by your supervisor.
 
-## Recent Upates
+## Recent Updates
 - Cut paper by section titles
-- Support handling longer articles and produce summaries for every subsections
+- Support handling longer articles and produce summaries for each subsections
 - Code refactorization
 
 ## How Does This Work
@@ -17,18 +18,16 @@ This repo will use ChatGPT to read complete academic papers:
 
 - Splitting a PDF paper into multiple parts for reading and generating a summary of each part. When reading each part, it will refer to the context of the previous part within the token limit.
 - Before reading the paper, you can set the questions you are interested in the prompt. This will help ChatGPT focus on the relevant information when reading and summarizing, resulting in better reading performance.
-reader.question(paper, 'What does dataset this paper use?')
-- Anwser your question based all the summaries of all parts of the paper
+- Answer your question based on all the summaries of all parts of the paper.
 
-By default, the initalized prompt will ask ChatGPT to focus on these points:
+By default, the initialized prompt will ask ChatGPT to focus on these points:
 - Who are the authors?
 - What is the process of the proposed method?
 - What is the performance of the proposed method? Please note down its performance metrics.
 - What are the baseline models and their performances? Please note down these baseline methods.
 - What dataset did this paper use?
-  
-These questions are designed for research articles in the field of computer science.
-After finishing reading the paper, you can ask questions using 'question()' interface.
+
+These questions are designed for research articles in the field of computer science. After finishing reading the paper, you can ask questions using the `question()` interface.
 
 ## Example: Read AlexNet Paper
 
