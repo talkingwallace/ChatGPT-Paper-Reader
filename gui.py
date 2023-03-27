@@ -1,22 +1,23 @@
 import gradio as gr
-
+from gpt_reader.paper.paper import Paper
 from gpt_reader.pdf_reader import PaperReader
-from gpt_reader.prompt import BASE_POINTS
 
 
 class GUI:
     def __init__(self):
         self.api_key = ""
         self.session = ""
+        self.paper = None
 
     def analyse(self, api_key, pdf_file):
-        self.session = PaperReader(api_key, points_to_focus=BASE_POINTS)
-        return self.session.read_pdf_and_summarize(pdf_file)
+        self.session = PaperReader(api_key)
+        self.paper = Paper(pdf_file)
+        return self.session.summarize(self.paper)
 
     def ask_question(self, question):
         if self.session == "":
             return "Please upload PDF file first!"
-        return self.session.question(question)
+        return self.session.question(self.paper, question)
 
 
 with gr.Blocks() as demo:

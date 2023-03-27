@@ -1,0 +1,6 @@
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+# Ignore JetBrains IDE configuration
+.idea/

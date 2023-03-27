@@ -2,17 +2,19 @@
 
 This repository provides a simple interface that utilizes the gpt-3.5-turbo model to read academic papers in PDF format locally. You can use it to help you summarize papers, create presentation slides, or simply fulfill tasks assigned by your supervisor.
 
+## Recent Upates
+- Cut paper by section titles
+- Support handling longer articles and produce summaries for every subsections
+- Code refactorization
+
 ## How Does This Work
-Considering the following issues with using ChatGPT to read complete academic papers:
 
-- The ChatGPT model itself has a context window size of 4096 tokens, making it unable to process the entire paper directly.
-- It is easy to forget the context when dealing with long texts.
-
-This repository attempts to solve these problems when using the OpenAI interface in the following ways:
+This repo will use ChatGPT to read complete academic papers:
 
 - Splitting a PDF paper into multiple parts for reading and generating a summary of each part. When reading each part, it will refer to the context of the previous part within the token limit.
-- Combining the summaries of each part to generate a summary of the entire paper. This can partially alleviate the forgetting problem when reading with ChatGPT.
 - Before reading the paper, you can set the questions you are interested in the prompt. This will help ChatGPT focus on the relevant information when reading and summarizing, resulting in better reading performance.
+reader.question(paper, 'What does dataset this paper use?')
+- Anwser your question based all the summaries of all parts of the paper
 
 By default, the initalized prompt will ask ChatGPT to focus on these points:
 - Who are the authors?
@@ -22,47 +24,37 @@ By default, the initalized prompt will ask ChatGPT to focus on these points:
 - What dataset did this paper use?
   
 These questions are designed for research articles in the field of computer science.
-After finishing reading the paper, you can ask questions using 'question()' interface, it will anwser your question based on the summaries of each part.
+After finishing reading the paper, you can ask questions using 'question()' interface.
 
 ## Example: Read AlexNet Paper
 
 ### Summarize AlexNet
 ```python
-from gpt_reader.pdf_reader import PaperReader, BASE_POINTS
+import pickle
+from gpt_reader.paper.paper import Paper
+from gpt_reader.pdf_reader import PaperReader
 
-print('Key points to focus while reading: {}'.format(BASE_POINTS))
+reader = PaperReader(openai_key='')
+paper = Paper('./alexnet.pdf')
+summary = reader.summarize(paper)
 
-api_key = 'Your key'
-session = PaperReader(api_key, points_to_focus=BASE_POINTS)  # You can set your key points 
-summary = session.read_pdf_and_summarize('./alexnet.pdf')
-
-print(summary)
+# save paper & load
+pickle.dump(paper, open('digested_paper.pkl', 'wb'))
+paper = pickle.load(open('digested_paper.pkl', 'rb'))
+# print summary of a section
+print(paper.paper_summaries[4])
 ```
 
 ```
 # console print
-reading pdf finished
-page: 0, part: 0
-page: 0, part: 1
-page: 1, part: 0
-page: 1, part: 1
-page: 2, part: 0
-page: 2, part: 1
-page: 3, part: 0
-page: 3, part: 1
-page: 4, part: 0
-page: 4, part: 1
-page: 5, part: 0
-page: 5, part: 1
-page: 6, part: 0
-page: 6, part: 1
-page: 7, part: 0
-page: 7, part: 1
-page: 8, part: 0
-page: 8, part: 1
+Beep....Beep....Beep.... Parsing
+Beep....Beep....Beep.... I am reading
+100%|██████████| 16/16 [02:20<00:00,  8.78s/it]
+Bzzzt-klonk... Reading Done, I have built memories for this paper.
 ```
 
-> reply: The paper presents a deep convolutional neural network architecture that was trained to classify 1.2 million high-resolution images in the ImageNet LSVRC-2010 contest into 1000 different classes. The network achieved top-1 and top-5 error rates of 37.5% and 17.0%, respectively, which is considerably better than the previous state-of-the-art. The authors used non-saturating neurons and a very efficient GPU implementation of the convolution operation to make training faster. They also employed a recently-developed regularization method called "dropout" to reduce overfitting in the fully-connected layers. The paper discusses the importance of large datasets for object recognition and the need for models with a large learning capacity. The authors entered a variant of this model in the ILSVRC-2012 competition and achieved a winning top-5 test error rate of 15.3%, compared to 26.2% achieved by the second-best entry. The paper also discusses the advantages of using convolutional neural networks (CNNs) for image recognition, including their ability to make strong and mostly correct assumptions about the nature of images, and the challenges of applying CNNs to high-resolution images. The authors describe the architecture of their CNN, which contains eight layers with weights, and the techniques they used to combat overfitting, including data augmentation and dropout. The paper provides qualitative evaluations of their CNN architecture and suggests future work, including using very large and deep convolutional nets on video sequences. The paper also lists references cited in the paper, including papers on image recognition challenges, object recognition, handwritten digit recognition, and convolutional networks and their applications in vision.
+> reply: ('3 The Architecture\n', "Summary:\nThe authors present the architecture of their network, which contains eight learned layers, including five convolutional and three fully-connected layers. They describe some novel or unusual features of their network's architecture, sorted according to their estimation of their importance.")
+  ...
 
 
 ### Ask some questions

@@ -42,9 +42,10 @@ class OpenAIBotCore(object):
 
 class ReaderBot(object):
 
-    def __init__(self, bot_core: OpenAIBotCore) -> None:
+    def __init__(self, bot_core: OpenAIBotCore, points_to_focus=BASE_POINTS) -> None:
         self.bot_core = bot_core
         self.enc = tiktoken.encoding_for_model(bot_core.model)
+        self.points_to_focus = points_to_focus
         self.read_buff = 300
 
     def init_prompt(self, text):
@@ -148,7 +149,7 @@ class ReaderBot(object):
         And You need to generate a brief but informative summary for this part in one sentence.
         Your return format:
         - summary: '...'
-        """.format(BASE_POINTS)
+        """.format(self.points_to_focus)
 
         msg = self.init_prompt(reading_prompt)
         # Reading and summarizing each part of the research paper
@@ -180,15 +181,14 @@ class ReaderBot(object):
         """.format(paper.paper_summaries)
 
         reply_format = """
-        You need to find out realted sections and reply me in this json format:
+        You need to find out realted sections and reply me ONLY in this json format:
         {{"reply": "..."
           "related_sections": ["section title", "section title", ...]
         }}
         """
 
         msg = [{'role': 'system', 'content': prompt}, 
-               {'role': 'user', 'content': """Now I send you the quenstion: {} \n
-                    {}    
-                    """.format(question_str, reply_format)}]
+               {'role': 'user', 'content': """Now I send you the quenstion: {} \n   
+                    """.format(question_str)}]
         ret = self.bot_core.communicate(msg)
         return ret
