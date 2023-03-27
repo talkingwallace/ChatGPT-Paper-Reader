@@ -107,7 +107,6 @@ python gui.py
 
 ## TODO
 
-- This demo still needs to be improved to support longer articles. Articles of more than 10 pages have the possibility to exceed the token limit during processing.
 - You may exceed the token limit when asking questions.
 - More prompt tuning needed to let it outputs stable results.
 - Imporve summary accuracies
