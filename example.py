@@ -1,7 +1,15 @@
-from gpt_reader.pdf_reader import PaperReader, BASE_POINTS
+import pickle
+from gpt_reader.paper.paper import Paper
+from gpt_reader.pdf_reader import PaperReader
 
-api_key = ''
-session = PaperReader(api_key, points_to_focus=BASE_POINTS)
-summary = session.read_pdf_and_summarize('./alexnet.pdf')
- 
-print(summary)
+reader = PaperReader(openai_key='')
+paper = Paper('./alexnet.pdf')
+summary = reader.summarize(paper)
+
+# save paper & load
+pickle.dump(paper, open('digested_paper.pkl', 'wb'))
+paper = pickle.load(open('digested_paper.pkl', 'rb'))
+# print summary of a section
+print(paper.paper_summaries[4])
+
+print(reader.question(paper, 'Describe the proposed method in details.'))
