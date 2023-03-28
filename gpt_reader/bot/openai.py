@@ -47,6 +47,7 @@ class ReaderBot(object):
         self.enc = tiktoken.encoding_for_model(bot_core.model)
         self.points_to_focus = points_to_focus
         self.read_buff = 300
+        self.question_msg = None
 
     def init_prompt(self, text):
         prompt = [
@@ -187,8 +188,11 @@ class ReaderBot(object):
         }}
         """
 
-        msg = [{'role': 'system', 'content': prompt}, 
-               {'role': 'user', 'content': """Now I send you the quenstion: {} \n   
-                    """.format(question_str)}]
-        ret = self.bot_core.communicate(msg)
+        if self.question_msg is None:
+            self.question_msg = [{'role': 'system', 'content': prompt}]
+        
+        self.question_msg.append({'role': 'user', 'content': """Now I send you the quenstion: {} \n   
+                        """.format(question_str)})
+        ret = self.bot_core.communicate(self.q)
+        self.question_msg.append({'role': 'system', 'content': ret})
         return ret
