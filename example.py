@@ -2,7 +2,13 @@ import pickle
 from gpt_reader.paper.paper import Paper
 from gpt_reader.pdf_reader import PaperReader
 
-reader = PaperReader(openai_key='')
+reader = PaperReader(
+    openai_key='',
+    # proxy = {
+    #     'http': 'http://user:pass@host:port',
+    #     'https': 'http://user:pass@host:port',
+    # }
+)
 paper = Paper('./alexnet.pdf')
 summary = reader.summarize(paper)
 
