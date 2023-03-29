@@ -4,3 +4,5 @@ __pycache__/
 *.pyo
 # Ignore JetBrains IDE configuration
 .idea/
+# virtual env
+venv/
