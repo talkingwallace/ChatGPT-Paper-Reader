@@ -193,6 +193,6 @@ class ReaderBot(object):
         
         self.question_msg.append({'role': 'user', 'content': """Now I send you the quenstion: {} \n   
                         """.format(question_str)})
-        ret = self.bot_core.communicate(self.q)
+        ret = self.bot_core.communicate(self.question_msg)
         self.question_msg.append({'role': 'system', 'content': ret})
         return ret
