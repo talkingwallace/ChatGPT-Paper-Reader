@@ -19,3 +19,9 @@ paper = pickle.load(open('digested_paper.pkl', 'rb'))
 print(paper.paper_summaries[4])
 
 print(reader.question(paper, 'Describe the proposed method in details.'))
+
+while True:
+    question = input("Your question (input 'q' to quit): ")
+    if question.strip().lower() == 'q':
+        break
+    print(reader.question(paper, question))
