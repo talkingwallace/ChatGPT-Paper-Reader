@@ -19,11 +19,12 @@ class PaperReader:
         The points to focus on when summarizing the paper.
     """
 
-    def __init__(self, openai_key, points_to_focus=BASE_POINTS):
+    def __init__(self, openai_key, points_to_focus=BASE_POINTS, proxy=None):
 
         # Setting the API key to use the OpenAI API
         openai.api_key = openai_key
-        self.bot_core = OpenAIBotCore(api_key=openai_key)
+        openai.proxy = proxy
+        self.bot_core = OpenAIBotCore(api_key=openai_key, proxy=proxy)
         self.bot = ReaderBot(self.bot_core, points_to_focus=points_to_focus)
 
     def summarize(self, paper: Paper):

@@ -19,8 +19,9 @@ BASE_POINTS = """
 
 class OpenAIBotCore(object):
 
-    def __init__(self, api_key, model='gpt-3.5-turbo', temperature=0.2, context_size=4096) -> None:
+    def __init__(self, api_key, model='gpt-3.5-turbo', temperature=0.2, context_size=4096, proxy=None) -> None:
         openai.api_key = api_key
+        openai.proxy = proxy
         self.model = model
         self.temperature = temperature
         self.context_szie = context_size
