@@ -11,7 +11,7 @@ class GUI:
 
     def analyse(self, api_key, pdf_file):
         self.session = PaperReader(api_key)
-        self.paper = Paper(pdf_file)
+        self.paper = Paper(pdf_file.name)
         return self.session.summarize(self.paper)
 
     def ask_question(self, question):
