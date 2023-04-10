@@ -6,11 +6,16 @@ from gpt_reader.pdf_reader import PaperReader
 class GUI:
     def __init__(self):
         self.api_key = ""
+        self.proxy = None # {'http': xxxx, 'https': xxxx}
         self.session = ""
         self.paper = None
 
-    def analyse(self, api_key, pdf_file):
-        self.session = PaperReader(api_key)
+    def analyse(self, api_key, pdf_file, http_proxy):
+        if http_proxy:  # if do not provide http_proxy, use the value in __init__ function
+            self.proxy = {'http': http_proxy, 'https': http_proxy}
+        if api_key:  # if do not provide api_key, use the value in __init__ function
+            self.api_key = api_key
+        self.session = PaperReader(self.api_key, proxy=self.proxy)
         self.paper = Paper(pdf_file.name)
         return self.session.summarize(self.paper)
 
@@ -28,7 +33,8 @@ with gr.Blocks() as demo:
 
     with gr.Tab("Upload PDF File"):
         pdf_input = gr.File(label="PDF File")
-        api_input = gr.Textbox(label="OpenAI API Key")
+        api_input = gr.Textbox(label="OpenAI API Key, sk-***")
+        http_proxy = gr.Textbox(label="Proxy, http://***:***, leave blank if you do not need proxy")
         result = gr.Textbox(label="PDF Summary")
         upload_button = gr.Button("Start Analyse")
     with gr.Tab("Ask question about your PDF"):
@@ -44,7 +50,7 @@ with gr.Blocks() as demo:
             [Github](https://github.com/talkingwallace/ChatGPT-Paper-Reader)""")
 
     app = GUI()
-    upload_button.click(fn=app.analyse, inputs=[api_input, pdf_input], outputs=result)
+    upload_button.click(fn=app.analyse, inputs=[api_input, pdf_input, http_proxy], outputs=result)
     ask_button.click(app.ask_question, inputs=question_input, outputs=answer)
 
 if __name__ == "__main__":
