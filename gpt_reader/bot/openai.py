@@ -192,7 +192,7 @@ class ReaderBot(object):
         if self.question_msg is None:
             self.question_msg = [{'role': 'system', 'content': prompt}]
         
-        self.question_msg.append({'role': 'user', 'content': """Now I send you the quenstion: {} \n   
+        self.question_msg.append({'role': 'user', 'content': """Now I send you the question: {} \n   
                         """.format(question_str)})
         ret = self.bot_core.communicate(self.question_msg)
         self.question_msg.append({'role': 'system', 'content': ret})
